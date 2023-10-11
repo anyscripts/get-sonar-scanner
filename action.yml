@@ -1,0 +1,48 @@
+name: Get Latest SonarScanner
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checking for SonarScanner
+      shell: bash
+      run: |
+        http_status=$(curl -s -o /dev/null -w "%{http_code}" "https://downloads-cdn-eu-central-1-prod.s3.eu-central-1.amazonaws.com/?delimiter=/&prefix=Distribution%2Fsonar-scanner-cli%2F")
+
+        if [ "$http_status" -ne 200 ]; then
+            echo "Error: The URL did not return a status code of 200. Exiting."
+            exit 1
+        fi
+
+        # Fetch the XML content from the URL
+        xml_content=$(curl -s "https://downloads-cdn-eu-central-1-prod.s3.eu-central-1.amazonaws.com/?delimiter=/&prefix=Distribution%2Fsonar-scanner-cli%2F")
+
+        key=$(echo "$xml_content" | xmllint --xpath "//*[local-name()='Contents'][last()]/*[local-name()='Key' and contains(., 'sonar-scanner-cli-')]" -)
+
+        VERSION=$(echo "$key" | perl -nle 'print $1 if /sonar-scanner-cli-(\d+\.\d+\.\d+\.\d+)/')
+        
+        LINUX_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$VERSION-linux.zip"
+        DARWIN_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$VERSION-macosx.zip"
+        WINDOWS_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$VERSION-windows.zip"
+
+        echo "SonarScanner CLI Version: $VERSION"
+        echo "version=$VERSION" >> $GITHUB_OUTPUT        
+        echo "linux=$LINUX_URL" >> $GITHUB_OUTPUT        
+        echo "darwin=$DARWIN_URL" >> $GITHUB_OUTPUT        
+        echo "windows=$WINDOWS_URL" >> $GITHUB_OUTPUT        
+
+outputs:
+  version:
+    description: 'SonarScanner CLI version'
+    value: ${{ steps.Checking_for_SonarScanner.outputs.version }}
+
+  linux:
+    description: 'SonarScanner Download link for Linux'
+    value: ${{ steps.Checking_for_SonarScanner.outputs.linux }}
+
+  darwin:
+    description: 'SonarScanner Download link for MacOS'
+    value: ${{ steps.Checking_for_SonarScanner.outputs.darwin }}
+
+  windows:
+    description: 'SonarScanner Download link for Windows'
+    value: ${{ steps.Checking_for_SonarScanner.outputs.windows }}
