@@ -3,7 +3,7 @@ name: Get Latest SonarScanner
 runs:
   using: 'composite'
   steps:
-    - name: Checking for SonarScanner
+    - name: check-scanner
       shell: bash
       run: |
         if [ -x "$(command -v xmllint)" ]; then
@@ -40,17 +40,17 @@ runs:
 outputs:
   version:
     description: 'SonarScanner CLI version'
-    value: ${{ steps.Checking_for_SonarScanner.outputs.version }}
+    value: ${{ steps.check-scanner.outputs.version }}
 
   linux:
     description: 'SonarScanner Download link for Linux'
-    value: ${{ steps.Checking_for_SonarScanner.outputs.linux }}
+    value: ${{ steps.check-scanner.outputs.linux }}
 
   darwin:
     description: 'SonarScanner Download link for MacOS'
-    value: ${{ steps.Checking_for_SonarScanner.outputs.darwin }}
+    value: ${{ steps.check-scanner.outputs.darwin }}
 
   windows:
     description: 'SonarScanner Download link for Windows'
-    value: ${{ steps.Checking_for_SonarScanner.outputs.windows }}
+    value: ${{ steps.check-scanner.outputs.windows }}
 
