@@ -3,7 +3,7 @@ name: Get Latest SonarScanner
 runs:
   using: 'composite'
   steps:
-    - name: check-scanner
+    - id: check-scanner
       shell: bash
       run: |
         
@@ -33,10 +33,10 @@ runs:
         WINDOWS_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$VERSION-windows.zip"
 
         echo "SonarScanner CLI Version: $VERSION"
-        echo "version=$(echo $VERSION)" >> "$GITHUB_OUTPUT"        
-        echo "linux=$(echo $LINUX_URL)" >> "$GITHUB_OUTPUT"        
-        echo "darwin=$(echo $DARWIN_URL)" >> "$GITHUB_OUTPUT"        
-        echo "windows=$(echo $WINDOWS_URL)" >> "$GITHUB_OUTPUT"
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"        
+        echo "linux=$LINUX_URL" >> "$GITHUB_OUTPUT"        
+        echo "darwin=$DARWIN_URL" >> "$GITHUB_OUTPUT"        
+        echo "windows=$WINDOWS_URL" >> "$GITHUB_OUTPUT"
 
 outputs:
   version:
