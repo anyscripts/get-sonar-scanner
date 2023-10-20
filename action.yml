@@ -6,7 +6,6 @@ runs:
     - name: check-scanner
       shell: bash
       run: |
-        echo "Checking for xml utils" >> $GITHUB_STEP_SUMMARY
         
         if [ -x "$(command -v xmllint)" ]; then
           echo "libxml2-utils is installed"
@@ -15,7 +14,6 @@ runs:
           sudo apt install -y libxml2-utils
         fi
         
-        echo "Checking for sonnar-scanner" >> $GITHUB_STEP_SUMMARY
         http_status=$(curl -s -o /dev/null -w "%{http_code}" "https://downloads-cdn-eu-central-1-prod.s3.eu-central-1.amazonaws.com/?delimiter=/&prefix=Distribution%2Fsonar-scanner-cli%2F")
 
         if [ "$http_status" -ne 200 ]; then
@@ -25,8 +23,6 @@ runs:
 
         # Fetch the XML content from the URL
         xml_content=$(curl -s "https://downloads-cdn-eu-central-1-prod.s3.eu-central-1.amazonaws.com/?delimiter=/&prefix=Distribution%2Fsonar-scanner-cli%2F")
-
-        echo "Extracting metadata" >> $GITHUB_STEP_SUMMARY
         
         key=$(echo "$xml_content" | xmllint --xpath "//*[local-name()='Contents'][last()]/*[local-name()='Key' and contains(., 'sonar-scanner-cli-')]" -)
 
@@ -37,10 +33,10 @@ runs:
         WINDOWS_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$VERSION-windows.zip"
 
         echo "SonarScanner CLI Version: $VERSION"
-        echo "version=$VERSION" >> "$GITHUB_OUTPUT"        
-        echo "linux=$LINUX_URL" >> "$GITHUB_OUTPUT"        
-        echo "darwin=$DARWIN_URL" >> "$GITHUB_OUTPUT"        
-        echo "windows=$WINDOWS_URL" >> "$GITHUB_OUTPUT"
+        echo "version=$(echo $VERSION)" >> "$GITHUB_OUTPUT"        
+        echo "linux=$(echo $LINUX_URL)" >> "$GITHUB_OUTPUT"        
+        echo "darwin=$(echo $DARWIN_URL)" >> "$GITHUB_OUTPUT"        
+        echo "windows=$(echo $WINDOWS_URL)" >> "$GITHUB_OUTPUT"
 
 outputs:
   version:
