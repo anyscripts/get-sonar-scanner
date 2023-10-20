@@ -6,6 +6,13 @@ runs:
     - name: Checking for SonarScanner
       shell: bash
       run: |
+        if [ -x "$(command -v xmllint)" ]; then
+          echo "libxml2-utils is installed"
+        else
+          echo "libxml2-utils are not installed"
+          sudo apt install -y libxml2-utils
+        fi
+        
         http_status=$(curl -s -o /dev/null -w "%{http_code}" "https://downloads-cdn-eu-central-1-prod.s3.eu-central-1.amazonaws.com/?delimiter=/&prefix=Distribution%2Fsonar-scanner-cli%2F")
 
         if [ "$http_status" -ne 200 ]; then
