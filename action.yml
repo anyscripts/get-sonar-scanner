@@ -40,16 +40,17 @@ runs:
 outputs:
   version:
     description: 'SonarScanner CLI version'
-    value: ${{ steps.Get_Latest_SonarScanner.outputs.version }}
+    value: ${{ steps.Checking_for_SonarScanner.outputs.version }}
 
   linux:
     description: 'SonarScanner Download link for Linux'
-    value: ${{ steps.Get_Latest_SonarScanner.outputs.linux }}
+    value: ${{ steps.Checking_for_SonarScanner.outputs.linux }}
 
   darwin:
     description: 'SonarScanner Download link for MacOS'
-    value: ${{ steps.Get_Latest_SonarScanner.outputs.darwin }}
+    value: ${{ steps.Checking_for_SonarScanner.outputs.darwin }}
 
   windows:
     description: 'SonarScanner Download link for Windows'
-    value: ${{ steps.Get_Latest_SonarScanner.outputs.windows }}
+    value: ${{ steps.Checking_for_SonarScanner.outputs.windows }}
+
