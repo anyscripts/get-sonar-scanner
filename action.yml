@@ -33,7 +33,7 @@ runs:
 
         echo "SonarScanner CLI Version: $VERSION"
         echo "version=$VERSION" >> $GITHUB_OUTPUT        
-        echo "linux=$LINUX_URL" >> $GITHUB_OUTPUT        
+        echo "linux::$LINUX_URL" >> $GITHUB_OUTPUT        
         echo "darwin=$DARWIN_URL" >> $GITHUB_OUTPUT        
         echo "windows=$WINDOWS_URL" >> $GITHUB_OUTPUT        
         
